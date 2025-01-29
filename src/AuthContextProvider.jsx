@@ -2,6 +2,7 @@ import "react";
 import { AuthContext } from "./Create.js";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 // eslint-disable-next-line react/prop-types
 const AuthContextProvider = ({ children }) => {
@@ -10,8 +11,12 @@ const AuthContextProvider = ({ children }) => {
     return localStorage.getItem("token") ? true : false;
   });
   const navigate = useNavigate();
+  const location = useLocation();
   const [token, setToken] = useState(null);
-
+  // useEffect to getting location
+  useEffect(() => {
+    console.log(location, "in Context provider");
+  }, [location]);
   // useEffect for getting token in console
   useEffect(() => {
     console.log(token);
@@ -20,7 +25,8 @@ const AuthContextProvider = ({ children }) => {
     setToken(authToken);
     localStorage.setItem("token", authToken);
     setAuthenticated(true);
-    navigate("/");
+    // navigate("/"); for home page
+    navigate(location.state.from || "/"); // navigate to jha se login pr click kiya
 
     //set authentication true
     // set the token
@@ -28,7 +34,7 @@ const AuthContextProvider = ({ children }) => {
   };
   const logout = () => {
     setToken(null);
-    localStorage.setItem("token", null);
+    localStorage.removeItem("token");
     setAuthenticated(false);
     navigate("/login");
     //set authentication true

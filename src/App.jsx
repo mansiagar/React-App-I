@@ -6,6 +6,7 @@ import Movies from "./Pages/Movies";
 import Login from "./Pages/Login";
 import { Routes, Route } from "react-router-dom";
 import PrivateRouter from "./Components/PrivateRouter";
+import MovieDetails from "./Pages/MovieDetails";
 const App = () => {
   return (
     <div>
@@ -17,6 +18,15 @@ const App = () => {
           element={
             <PrivateRouter>
               <Movies />
+            </PrivateRouter>
+          }
+        ></Route>
+        {/* Route for dynamic routing each movie */}
+        <Route
+          path="/movies/:id"
+          element={
+            <PrivateRouter>
+              <MovieDetails />
             </PrivateRouter>
           }
         ></Route>

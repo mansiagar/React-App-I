@@ -1,12 +1,18 @@
 import "react";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { AuthContext } from "../Create";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 // eslint-disable-next-line react/prop-types
 const PrivateRouter = ({ children }) => {
+  const location = useLocation();
   const { isAuthenticated } = useContext(AuthContext);
+  useEffect(() => {
+    console.log(location);
+  }, [location]);
+
   if (!isAuthenticated) {
-    return <Navigate to="/login" />;
+    //Navigate me state attribute purani state ko yaad rkhta hai
+    return <Navigate to="/login" state={{ from: location }} />;
   }
   return children;
 };

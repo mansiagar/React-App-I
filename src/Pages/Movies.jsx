@@ -1,95 +1,22 @@
-// import axios from "axios";
-// import "react";
-// import { useEffect, useState } from "react";
-
-// const Movies = () => {
-//   const [movies, setMovies] = useState([]);
-//   const [Loading, setLoading] = useState(false);
-//   const [error, setError] = useState(null);
-//   useEffect(() => {
-//     const fetchMovies = async () => {
-//       setLoading(true);
-//       try {
-//         const response = await axios.get(
-//           `https://frill-shard-licorice.glitch.me/movies`
-//         );
-//         setMovies(response.data);
-//         setLoading(false);
-//       } catch (error) {
-//         setError(error.response.data.message);
-//         setLoading(false);
-//       }
-//     };
-//     fetchMovies();
-//   }, []);
-//   console.log(movies);
-//   return (
-//     <div
-//       className="movies-container"
-//       style={{ padding: "20px", textAlign: "center" }}
-//     >
-//       <h1>Movie Explorer</h1>
-
-//       {Loading && <h2>Loading...</h2>}
-//       {error && <h2 style={{ color: "red" }}>{error}</h2>}
-//       {!Loading && !error && movies.length === 0 && (
-//         <h2>No movies available.</h2>
-//       )}
-
-//       <div
-//         className="movies-list"
-//         style={{
-//           display: "grid",
-//           gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-//           gap: "20px",
-//           marginTop: "20px",
-//         }}
-//       >
-//         {movies.map((movie) => (
-//           <div
-//             key={movie.id}
-//             style={{
-//               border: "1px solid #ccc",
-//               borderRadius: "10px",
-//               padding: "10px",
-//               textAlign: "center",
-//             }}
-//           >
-//             <img
-//               src={movie.poster}
-//               alt={movie.title}
-//               style={{ width: "100%", borderRadius: "10px" }}
-//             />
-//             <h3>{movie.title}</h3>
-//             <p>
-//               <strong>Genre:</strong> {movie.genre}
-//             </p>
-//             <p>
-//               <strong>Release Date:</strong> {movie.releaseDate}
-//             </p>
-//           </div>
-//         ))}
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Movies;
-
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
+  const navigate = useNavigate();
+  // State for gener
+  const [genre, setGenre] = useState("");
   useEffect(() => {
     const fetchMovies = async () => {
       setLoading(true);
       try {
         const response = await axios.get(
-          `https://frill-shard-licorice.glitch.me/movies`
+          `https://frill-shard-licorice.glitch.me/movies/?genre=${genre}`
+
+          //https://frill-shard-licorice.glitch.me/movies?genre=Crime
         );
         setMovies(response.data.movies);
       } catch (error) {
@@ -102,8 +29,14 @@ const Movies = () => {
       }
     };
     fetchMovies();
-  }, []);
+  }, [genre]);
+  // gener is dependent variable
 
+  // Dynamic Routing for each movie
+  const handleViewMore = (id) => {
+    navigate(`/movies/${id}`);
+  };
+  console.log(genre);
   return (
     <div
       className="movies-container"
@@ -116,7 +49,20 @@ const Movies = () => {
       {!loading && !error && movies.length === 0 && (
         <h2>No movies available.</h2>
       )}
-
+      {/* Filter by gener */}
+      <div>
+        <select
+          className="filter-section"
+          value={genre}
+          onChange={(e) => setGenre(e.target.value)}
+        >
+          <option value="">All</option>
+          <option value="Action">Action</option>
+          <option value="Crime">Crime</option>
+          <option value="Drama">Drama</option>
+          <option value="Sci-Fi">Sci-Fi</option>
+        </select>
+      </div>
       <div
         className="movies-list"
         style={{
@@ -148,6 +94,16 @@ const Movies = () => {
             <p>
               <strong>Release Date:</strong> {movie.releaseDate}
             </p>
+            <div className="btn">
+              <button className="edit-btn">Edit</button>
+              <button className="delete-btn">Delete</button>
+              <button
+                className="view-btn"
+                onClick={() => handleViewMore(movie.id)}
+              >
+                View More..
+              </button>
+            </div>
           </div>
         ))}
       </div>
