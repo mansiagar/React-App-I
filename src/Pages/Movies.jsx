@@ -36,13 +36,27 @@ const Movies = () => {
   const handleViewMore = (id) => {
     navigate(`/movies/${id}`);
   };
-  console.log(genre);
+  //delete the movie
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(
+        `https://frill-shard-licorice.glitch.me/movies/${id}`
+      );
+      setMovies(movies.filter((movie) => movie.id !== id));
+      //setMovies(response.data.movies);
+      console.log(response);
+    } catch (error) {
+      alert("failed to delete", error);
+    }
+  };
+
   return (
     <div
       className="movies-container"
       style={{ padding: "20px", textAlign: "center" }}
     >
       <h1>Movie Explorer</h1>
+      <button onClick={() => navigate("/add-movie")}>Add Movie</button>
 
       {loading && <h2>Loading...</h2>}
       {error && <h2 style={{ color: "red" }}>{error}</h2>}
@@ -96,7 +110,12 @@ const Movies = () => {
             </p>
             <div className="btn">
               <button className="edit-btn">Edit</button>
-              <button className="delete-btn">Delete</button>
+              <button
+                className="delete-btn"
+                onClick={() => handleDelete(movie.id)}
+              >
+                Delete
+              </button>
               <button
                 className="view-btn"
                 onClick={() => handleViewMore(movie.id)}

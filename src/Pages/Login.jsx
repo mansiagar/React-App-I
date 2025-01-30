@@ -13,24 +13,29 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios({
-        url: `https://fakestoreapi.com/auth/login`,
+        // url: `https://fakestoreapi.com/auth/login`,
+        url: `https://frill-shard-licorice.glitch.me/login`,
         method: "POST",
         data: {
           username: username, //"mor_2314",
           password: password, //"83r5^_"
         },
+        // updated username and password
+        // {
+        //   "username": "admin",
+        //   "password": "password123"
+        // }
       });
       console.log(response.data);
-      login(response.data.token);
-      // setToken(response.data.token)
-      // if (response.data.success) {
-      //   console.log(response.data.token, "response");
-      //   const { token } = response.data;
-      //   setToken(token);
-      // }
-    } catch (err) {
+      // login(response.data.token);
+      if (response.data.success) {
+        console.log(response.data.token, "response");
+        const { token } = response.data;
+        login(token); //sens the token to context
+      }
+    } catch (error) {
       //set error
-      setError(err.response.data.message);
+      setError(error);
     }
   };
   return (
