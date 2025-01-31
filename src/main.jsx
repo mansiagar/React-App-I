@@ -7,8 +7,10 @@ import AuthContextProvider from "./AuthContextProvider.jsx";
 
 createRoot(document.getElementById("root")).render(
   <HashRouter>
+    {/* <BrowserRouter> */}
     <AuthContextProvider>
       <App />
     </AuthContextProvider>
+    {/* </BrowserRouter> */}
   </HashRouter>
 );

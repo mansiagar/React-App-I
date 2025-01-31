@@ -1,7 +1,8 @@
 import "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 const intialdata = {
   title: "",
   poster: "",
@@ -10,34 +11,52 @@ const intialdata = {
   description: "",
 };
 
-const AddMovie = () => {
+const EditMovie = () => {
+  const { id } = useParams();
   const [formdata, setFormdata] = useState(intialdata);
   const navigate = useNavigate();
-  const handleAddMovie = async (e) => {
+
+  // pre fill the input fields
+  useEffect(() => {
+    const fetchMovie = async () => {
+      try {
+        const response = await axios.get(
+          `https://frill-shard-licorice.glitch.me/movies/${id}`
+        );
+        setFormdata(response.data);
+        console.log(response.data);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchMovie();
+  }, [id]);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormdata({ ...formdata, [name]: value });
+  };
+  const handleEditMovie = async (e) => {
     e.preventDefault();
     console.log(formdata);
     try {
       await axios({
-        url: `https://frill-shard-licorice.glitch.me/movies`,
-        method: "POST",
+        url: `https://frill-shard-licorice.glitch.me/movies/${id}`,
+        method: "PUT",
         data: formdata,
-        headers: { "Content-Type": "application/json" },
       });
+      alert("movie successfully edited");
       navigate("/movies");
     } catch (error) {
       console.log(error);
       alert("movie not added");
     }
   };
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormdata({ ...formdata, [name]: value });
-  };
 
   return (
     <div>
-      <h1>Add Movie</h1>
-      <form onSubmit={handleAddMovie}>
+      <h1>Edit Movie</h1>
+      <form onSubmit={handleEditMovie}>
         <input
           type="text"
           placeholder="Enter Title"
@@ -79,4 +98,4 @@ const AddMovie = () => {
   );
 };
 
-export default AddMovie;
+export default EditMovie;

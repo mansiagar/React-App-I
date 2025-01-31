@@ -35,7 +35,7 @@ const Login = () => {
       }
     } catch (error) {
       //set error
-      setError(error);
+      setError("Invalid Crediantials", error);
     }
   };
   return (

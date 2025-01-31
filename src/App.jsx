@@ -8,6 +8,7 @@ import { Routes, Route } from "react-router-dom";
 import PrivateRouter from "./Components/PrivateRouter";
 import MovieDetails from "./Pages/MovieDetails";
 import AddMovie from "./Pages/AddMovie";
+import EditMovie from "./Pages/EditMovie";
 const App = () => {
   return (
     <div>
@@ -37,6 +38,14 @@ const App = () => {
           element={
             <PrivateRouter>
               <AddMovie />
+            </PrivateRouter>
+          }
+        ></Route>
+        <Route
+          path="/edit-movie/:id"
+          element={
+            <PrivateRouter>
+              <EditMovie />
             </PrivateRouter>
           }
         ></Route>

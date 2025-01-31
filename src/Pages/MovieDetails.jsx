@@ -6,7 +6,7 @@ import axios from "axios";
 const MovieDetails = () => {
   // in this id passing from routing handleview more button
   const { id } = useParams();
-  const [movies, setMovie] = useState([]);
+  const [movies, setMovie] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 

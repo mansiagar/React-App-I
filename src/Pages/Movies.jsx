@@ -109,7 +109,12 @@ const Movies = () => {
               <strong>Release Date:</strong> {movie.releaseDate}
             </p>
             <div className="btn">
-              <button className="edit-btn">Edit</button>
+              <button
+                className="edit-btn"
+                onClick={() => navigate(`/edit-movie/${movie.id}`)}
+              >
+                Edit
+              </button>
               <button
                 className="delete-btn"
                 onClick={() => handleDelete(movie.id)}
